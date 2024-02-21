@@ -1,5 +1,5 @@
 <div class="row align-items-center my-2">
-  <div class="col-md-4">
+  <div class="col-md-2">
     <label>{{ $label }}</label>
   </div>
   <div class="col-md-6">

@@ -5,6 +5,8 @@ use App\Http\Controllers\Apps\ProjectSettingController;
 use App\Http\Controllers\Apps\RoleController;
 use App\Http\Controllers\Apps\UserController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\TransactionController;
 use App\Models\SessionToken;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -49,6 +51,13 @@ Route::middleware(["auth", "check_maintanance", "check_session_token"])->group(f
 
   Route::get("/app/settings", [ProjectSettingController::class, "index"])->name("app.settings.index")->middleware("check_authorized:005S");
   Route::put("/app/settings", [ProjectSettingController::class, "update"])->name("app.settings.update")->middleware("check_authorized:005S");
+
+  Route::post("/app/products/get", [ProductController::class, "get"])->name("app.products.get")->middleware("check_authorized:003U");
+  Route::resource('/app/products', ProductController::class, ['as' => 'app'])->middleware("check_authorized:003U|004R");
+
+  Route::get('/app/transactions/detail_trans', [TransactionController::class, 'detail_trans'])->name('app.transactions.detail_trans')->middleware("check_authorized:003U");
+  Route::post("/app/transactions/get", [TransactionController::class, "get"])->name("app.transactions.get")->middleware("check_authorized:003U");
+  Route::resource('/app/transactions', TransactionController::class, ['as' => 'app'])->middleware("check_authorized:003U|004R");
 });
 
 Route::get("/maintenance", function() {

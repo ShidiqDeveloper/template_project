@@ -3,7 +3,7 @@
     <label>{{ $label }}</label>
   </div>
   <div class="col-md-{{ $col2 ?? 6 }}">
-    <input type="{{ $type ?? 'text' }}" class="form-control" name="{{ $name }}" value="{{ $value ?? '' }}" placeholder="{{ $placeholder ?? '' }}" {{ $required ?? "" }}>
+    <input type="{{ $type ?? 'text' }}" onchange="{{ $onchange ?? '' }}" class="form-control" name="{{ $name }}" value="{{ $value ?? '' }}" placeholder="{{ $placeholder ?? '' }}" {{ $required ?? "" }} {{ $readonly ?? "" }}>
     <div></div>
   </div>
 </div>

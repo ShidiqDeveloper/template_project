@@ -19,7 +19,7 @@ class UserService extends BaseService
    */
   private function generate_query_get(Request $request)
   {
-    $column_search = ["users.name", "users.email", "r.role_name"];
+  $column_search = ["users.name", "users.email", "r.role_name"];
     $column_order = [NULL, "users.name", "users.email", "r.role_name"];
     $order = ["users.id" => "DESC"];
 

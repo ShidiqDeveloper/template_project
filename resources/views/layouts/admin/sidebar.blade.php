@@ -41,6 +41,26 @@
                 </li>
               @endif
 
+              @if (check_authorized("003U|004R"))
+                <li
+                    class="sidebar-item {{ request()->segment(2) == 'products' ? 'active' : '' }}">
+                    <a href="{{ route('app.products.index') }}" class='sidebar-link'>
+                      <i class="bi bi-person-lines-fill"></i>
+                        <span>Products</span>
+                    </a>
+                </li>
+              @endif
+
+              @if (check_authorized("003U|004R"))
+                <li
+                    class="sidebar-item {{ request()->segment(2) == 'transactions' ? 'active' : '' }}">
+                    <a href="{{ route('app.transactions.index') }}" class='sidebar-link'>
+                      <i class="bi bi-person-lines-fill"></i>
+                        <span>Transaksi</span>
+                    </a>
+                </li>
+              @endif
+
               @if (check_authorized("005S"))
                 <li
                     class="sidebar-item {{ request()->segment(2) == 'settings' ? 'active' : '' }}">
