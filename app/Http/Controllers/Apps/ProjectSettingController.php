@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Apps;
 
 use App\Http\Controllers\Controller;
 use App\Models\ProjectSetting;
+use App\Supports\LogHistorySupport;
 use Illuminate\Http\Request;
 
 class ProjectSettingController extends Controller
@@ -70,10 +71,13 @@ class ProjectSettingController extends Controller
    */
   public function update(Request $request)
   {
-    ProjectSetting::query()->where("id", 1)->update([
+    $values = [
       "multi_login_device" => $request->has("multi_login_device") ? 1 : 0,
       "is_maintenance" => $request->has("is_maintenance") ? 1 : 0,
-    ]);
+    ];
+    ProjectSetting::query()->where("id", 1)->update($values);
+
+    LogHistorySupport::store("Update Setting System", new_data: $values);
 
     $response = response_success_default("Berhasil update setting!", FALSE, route("app.settings.index"));
     return response_json($response);

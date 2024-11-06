@@ -5,6 +5,7 @@ use App\Models\SessionToken;
 use App\Models\User;
 use App\Services\Cores\BaseService;
 use App\Services\Cores\ErrorService;
+use App\Supports\LogHistorySupport;
 use App\Validations\UserValidation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -76,10 +77,12 @@ class UserService extends BaseService
   public function store(UserRequest $request)
   {
     try {
+      // Validate then save as value
       $values = $request->validated();
       $values["password"] = Hash::make($values["password"]);
       $user = User::create($values);
 
+      LogHistorySupport::store("Store User", null, $user->toArray());
       $response = \response_success_default("Berhasil menambahkan user!", $user->id, route("app.users.show", $user->id));
     } catch (\Exception $e) {
       ErrorService::error($e, "Gagal store user!");
@@ -99,15 +102,23 @@ class UserService extends BaseService
   {
     try {
       $user_id = $user->id;
+
+      // Validate then save as value
       $values = $request->validated();
+
+      // If password is change
       if ($values["password"]) {
         $values["password"] = Hash::make($values["password"]);
       } else {
         unset($values["password"]);
       }
 
-      // dd($values);
-      $user->update($values);
+      User::query()
+      ->where("id", $user_id)
+      ->update($values);
+
+      // Insert log history
+      LogHistorySupport::store("Update User", $user->toArray(), $values);
 
       $response = \response_success_default("Berhasil update data user!", $user_id, route("app.users.show", $user->id));
     } catch (\Exception $e) {
